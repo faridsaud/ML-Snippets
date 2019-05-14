@@ -11,10 +11,6 @@ data = np.asarray(pd.read_csv('data.csv', header=None))
 X = data[:,0:2]
 y = data[:,2]
 
-print(X.shape)
-
-print(y.shape)
-
 # split into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X,
                                                     y,
