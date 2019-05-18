@@ -7,7 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 # Read the data.
 df = pd.read_csv('data.csv')
-print(df.loc[1]['age'])
+print('Age before normalization', df.loc[1]['age'])
 
 
 # Initialize a scaler, then apply it to the features
@@ -19,6 +19,11 @@ normalized_data = pd.DataFrame(data = df)
 normalized_data[numerical] = scaler.fit_transform(df[numerical])
 
 
-print(normalized_data.loc[1]['age'])
+print('Age after normalization', normalized_data.loc[1]['age'])
+
+print('Sex before one-hot encoding', normalized_data.loc[1]['sex'])
+
+features_final = pd.get_dummies(normalized_data)
 
 
+print('Sex is transformed to either Male of Female after one-hot encoding', features_final.loc[1]['sex_ Male'])
