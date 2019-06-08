@@ -5,7 +5,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 import numpy as np
 import pandas as pd
-from Plotting import plot_model
+from SupervisedLearning.Plotting import plot_model
 
 # Read Data
 data = np.asarray(pd.read_csv('data.csv', header=None))
