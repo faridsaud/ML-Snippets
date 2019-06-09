@@ -4,7 +4,7 @@ from torch import nn
 import torch.nn.functional as F
 from torchvision import datasets, transforms
 from Classifier import Classifier
-import helper
+import numpy
 
 # Define a transform to normalize the data
 transform = transforms.Compose([transforms.ToTensor(),
@@ -98,8 +98,22 @@ with torch.no_grad():
 
 ps = torch.exp(output)
 
-helper.view_classify(img.view(1, 28, 28), ps, version='Fashion')
+arr = ps.data.numpy().squeeze()
+selectedClassIndex = numpy.where(arr == numpy.amax(arr))[0][0]
 
 
+## SAVE MODEL
+print("Our model: \n\n", model, '\n')
+print("The state dict keys: \n\n", model.state_dict().keys())
+torch.save(model.state_dict(), 'checkpoint.pth')
 
+## LOAD MODEL
+state_dict = torch.load('checkpoint.pth')
+print(state_dict.keys())
 
+model.load_state_dict(state_dict)
+
+print(model)
+
+print(model.hidden_1.weight)
+print(model.hidden_2.bias)
