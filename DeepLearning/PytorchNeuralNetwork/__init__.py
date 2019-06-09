@@ -1,27 +1,47 @@
-import torch.nn.functional as F
+from torch import optim
+import torch
 from torch import nn
+import torch.nn.functional as F
+from torchvision import datasets, transforms
 
-#Implementaion of a neural network using neural_network.png as reference
+# Define a transform to normalize the data
+transform = transforms.Compose([transforms.ToTensor(),
+                                transforms.Normalize((0.5,), (0.5,))
+                                ])
+# Download and load the training data
+trainset = datasets.MNIST('~/.pytorch/MNIST_data/', download=True, train=True, transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
 
-class Network(nn.Module):
-    def __init__(self):
-        super().__init__()
-        # Inputs to hidden layer 1 linear transformation
-        self.hidden_1 = nn.Linear(784, 128)
-        # Inputs to hidden layer 2 linear transformation
-        self.hidden_2 = nn.Linear(128, 64)
-        # Output layer, 10 units - one for each digit
-        self.output = nn.Linear(64, 10)
 
-    def forward(self, x):
-        # Hidden layer 1 with sigmoid activation
-        x = F.relu(self.hidden(x))
-        # Hidden layer 2 with sigmoid activation
-        x = F.relu(self.hidden(x))
-        # Output layer with softmax activation
-        x = F.softmax(self.output(x), dim=1)
+# define model/classifier
+model = nn.Sequential(nn.Linear(784, 128),
+                      nn.ReLU(),
+                      nn.Linear(128, 64),
+                      nn.ReLU(),
+                      nn.Linear(64, 10),
+                      nn.LogSoftmax(dim=1))
 
-        return x
+# define criterion
+criterion = nn.NLLLoss()
 
-model = Network()
-print(model)
+# define optimizer
+optimizer = optim.SGD(model.parameters(), lr=0.003)
+
+epochs = 5
+for e in range(epochs):
+    running_loss = 0
+    for images, labels in trainloader:
+        # Flatten MNIST images into a 784 long vector
+        images = images.view(images.shape[0], -1)
+
+        # Clear the gradients, do this because gradients are accumulated
+        optimizer.zero_grad()
+
+        output = model.forward(images)
+        loss = criterion(output, labels)
+        loss.backward()
+        optimizer.step()
+
+        running_loss += loss.item()
+    else:
+        print(f"Training loss: {running_loss / len(trainloader)}")
