@@ -1,6 +1,6 @@
 from sklearn import datasets, preprocessing
 from sklearn.cluster import KMeans
-from sklearn.metrics import adjusted_rand_score
+from sklearn.metrics import adjusted_rand_score, silhouette_score
 
 
 # Process data
@@ -16,5 +16,6 @@ pred = kmeans.fit_predict(normalized_X)
 
 # Eval models
 score = adjusted_rand_score(iris.target, pred)
+sil_score = silhouette_score(normalized_X, pred, metric='euclidean')
 
-print("Scores: \nKMeans:", score)
+print("Scores: \nKMeans:", score, sil_score)
