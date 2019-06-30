@@ -16,7 +16,7 @@ pred = gmm.fit_predict(normalized_X)
 
 # Eval models
 rand_score = adjusted_rand_score(iris.target, pred)
-sil_score = silhouette_score(normalized_X, pred, metric='euclidean'),
+sil_score = silhouette_score(normalized_X, pred, metric='euclidean')
 
 
 print("Rand score \nGMM:", rand_score)
