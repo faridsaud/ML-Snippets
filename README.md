@@ -1,6 +1,3 @@
 # ML-Snippets
 
-Classifiers:
-
-SVM
-Naives Bayers (3 classifiers)
+Contains snippets for the most common algorithms used in ML
