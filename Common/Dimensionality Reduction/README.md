@@ -1,0 +1,1 @@
+The dimensionality of the data used for this section isn't enough to justify the use of dimensionality reduction, use this folder only as a snippet reference on how to use the proper dimensionality reduction algorithms.
